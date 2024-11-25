@@ -35,9 +35,9 @@ public class ShelfService {
         return shelfRepository.save(shelf);
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
-    public void executeTask() {
-        logger.info(shelfRepository.findAll().toString());
-    }
+//    @Scheduled(cron = "0 */10 * * * *")
+//    public void executeTask() {
+//        logger.info(shelfRepository.findAll().toString());
+//    }
 
 }
