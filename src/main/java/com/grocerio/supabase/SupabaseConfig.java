@@ -50,13 +50,6 @@ public class SupabaseConfig {
         environment.getSystemProperties().put("supabase.api_key", data.api_key);
         environment.getSystemProperties().put("supabase.api_key_secret", data.api_key_secret);
         environment.getSystemProperties().put("supabase.api_jwt_secret", data.api_jwt_secret);
-    }
-
-    @PostConstruct
-    public void renderProperties() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        File jsonFile = new File("./etc/secrets/supabase.json");
-        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
 
         // Set properties in the environment
         environment.getSystemProperties().put("render_url", data.render_url);
