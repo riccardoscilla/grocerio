@@ -17,4 +17,5 @@ public class SupabaseConfigData {
     String api_key;
     String api_key_secret;
     String api_jwt_secret;
+    String render_url;
 }
