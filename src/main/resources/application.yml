@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: grocerio
+
+  datasource:
+    hikari:
+      maximum-pool-size: 10
+
+      connection-timeout: 20000
+      max-lifetime: 1800000
+      leak-detection-threshold: 2000
+      cache-prep-stmts: false
+      prepStmtCacheSize: 250
+      prepStmtCacheSqlLimit: 2048
+      useServerPrepStmts: true
+
+  security:
+    oauth2.resourceserver.jwt.jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
+
+  jpa:
+    hibernate.ddl-auto: update
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
