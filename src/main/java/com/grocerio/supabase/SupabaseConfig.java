@@ -18,41 +18,51 @@ import java.io.IOException;
 @Profile("!test")
 public class SupabaseConfig {
     private final ConfigurableEnvironment environment;
+    private SupabaseConfigData configData;
 
     public SupabaseConfig(ConfigurableEnvironment environment) {
         this.environment = environment;
     }
 
-    @Bean
-    public DataSource dataSource() throws IOException {
+    @PostConstruct
+    public void loadConfig() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         File jsonFile = new File("./etc/secrets/supabase.json");
-        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
+        configData = mapper.readValue(jsonFile, SupabaseConfigData.class);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+//        ObjectMapper mapper = new ObjectMapper();
+//        File jsonFile = new File("./etc/secrets/supabase.json");
+//        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
 
         // Set up HikariCP
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:postgresql://"+ data.db_host+":"+ data.db_port+"/"+ data.db_name);
-        dataSource.setUsername(data.db_user);
-        dataSource.setPassword(data.db_password);
+        dataSource.setJdbcUrl("jdbc:postgresql://"+ configData.db_host+":"+ configData.db_port+"/"+ configData.db_name);
+        dataSource.setUsername(configData.db_user);
+        dataSource.setPassword(configData.db_password);
         dataSource.setDriverClassName("org.postgresql.Driver");
 
         return dataSource;
     }
 
-    @PostConstruct
-    public void apiProperties() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        File jsonFile = new File("./etc/secrets/supabase.json");
-        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
+    @Bean
+    public String apiProperties() {
+//        ObjectMapper mapper = new ObjectMapper();
+//        File jsonFile = new File("./etc/secrets/supabase.json");
+//        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
 
         // Set properties in the environment
-        environment.getSystemProperties().put("supabase.api_url", data.api_url);
-        environment.getSystemProperties().put("supabase.api_key", data.api_key);
-        environment.getSystemProperties().put("supabase.api_key_secret", data.api_key_secret);
-        environment.getSystemProperties().put("supabase.api_jwt_secret", data.api_jwt_secret);
+        environment.getSystemProperties().put("supabase.api_url", configData.api_url);
+        environment.getSystemProperties().put("supabase.api_key", configData.api_key);
+        environment.getSystemProperties().put("supabase.api_key_secret", configData.api_key_secret);
+        environment.getSystemProperties().put("supabase.api_jwt_secret", configData.api_jwt_secret);
 
         // Set properties in the environment
-        environment.getSystemProperties().put("render_url", data.render_url);
+        environment.getSystemProperties().put("render_url", configData.render_url);
+
+        return  "";
     }
 
     @Bean
