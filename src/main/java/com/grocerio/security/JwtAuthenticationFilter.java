@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -20,11 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Key;
 
-@Component
-//@DependsOn("supabaseConfig")
+@Service
+@DependsOn("supabaseConfig")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${supabase.api_jwt_secret:#{null}}")
+    @Value("${supabase.api_jwt_secret")
     String apiJwtSecret;
 
     @Override
