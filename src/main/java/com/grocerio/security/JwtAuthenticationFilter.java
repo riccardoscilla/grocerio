@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.security.Key;
 
 @Component
-@DependsOn("supabaseConfig")
+//@DependsOn("supabaseConfig")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${supabase.api_jwt_secret}")
+    @Value("${supabase.api_jwt_secret:#{null}}")
     String apiJwtSecret;
 
     @Override
