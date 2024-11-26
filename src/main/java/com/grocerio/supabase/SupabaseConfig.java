@@ -29,29 +29,6 @@ public class SupabaseConfig {
         ObjectMapper mapper = new ObjectMapper();
         File jsonFile = new File("./etc/secrets/supabase.json");
         configData = mapper.readValue(jsonFile, SupabaseConfigData.class);
-    }
-
-    @Bean
-    public DataSource dataSource() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        File jsonFile = new File("./etc/secrets/supabase.json");
-//        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
-
-        // Set up HikariCP
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:postgresql://"+ configData.db_host+":"+ configData.db_port+"/"+ configData.db_name);
-        dataSource.setUsername(configData.db_user);
-        dataSource.setPassword(configData.db_password);
-        dataSource.setDriverClassName("org.postgresql.Driver");
-
-        return dataSource;
-    }
-
-    @Bean
-    public String apiProperties() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        File jsonFile = new File("./etc/secrets/supabase.json");
-//        SupabaseConfigData data = mapper.readValue(jsonFile, SupabaseConfigData.class);
 
         // Set properties in the environment
         environment.getSystemProperties().put("supabase.api_url", configData.api_url);
@@ -61,8 +38,18 @@ public class SupabaseConfig {
 
         // Set properties in the environment
         environment.getSystemProperties().put("render_url", configData.render_url);
+    }
 
-        return  "";
+    @Bean
+    public DataSource dataSource() {
+        // Set up HikariCP
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:postgresql://"+ configData.db_host+":"+ configData.db_port+"/"+ configData.db_name);
+        dataSource.setUsername(configData.db_user);
+        dataSource.setPassword(configData.db_password);
+        dataSource.setDriverClassName("org.postgresql.Driver");
+
+        return dataSource;
     }
 
     @Bean
