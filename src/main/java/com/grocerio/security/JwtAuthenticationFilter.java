@@ -13,17 +13,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.Key;
 
-@Service
+@Component
 @DependsOn("supabaseConfig")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${supabase.api_jwt_secret")
+    @Value("${supabase.api_jwt_secret}")
     String apiJwtSecret;
 
     @Override
