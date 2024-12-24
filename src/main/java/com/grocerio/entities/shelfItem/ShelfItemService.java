@@ -1,6 +1,7 @@
 package com.grocerio.entities.shelfItem;
 
 import com.grocerio.entities.item.ItemService;
+import com.grocerio.entities.item.model.ItemNew;
 import com.grocerio.entities.shelfItem.model.ShelfItem;
 import com.grocerio.entities.shelfItem.model.ShelfItemEdit;
 import com.grocerio.entities.shelfItem.model.ShelfItemNew;
@@ -36,7 +37,9 @@ public class ShelfItemService {
         shelfItem.quantity = shelfItemNew.quantity;
         shelfItem.purchaseDate = shelfItemNew.purchaseDate;
         shelfItem.note = shelfItemNew.note;
-        shelfItem.item = itemService.get(shelfItemNew.itemId, shelfId);
+
+        ItemNew itemNew = new ItemNew(shelfItemNew.itemName, shelfItemNew.categoryId);
+        shelfItem.item = itemService.getOrSave(itemNew, shelfId);
 
         this.shelfItemRepository.save(shelfItem);
     }
@@ -46,7 +49,9 @@ public class ShelfItemService {
         shelfItem.quantity = shelfItemEdit.quantity;
         shelfItem.purchaseDate = shelfItemEdit.purchaseDate;
         shelfItem.note = shelfItemEdit.note;
-        shelfItem.item = itemService.get(shelfItemEdit.itemId, shelfId);
+
+        ItemNew itemNew = new ItemNew(shelfItemEdit.itemName, shelfItemEdit.categoryId);
+        shelfItem.item = itemService.getOrSave(itemNew, shelfId);
 
         this.shelfItemRepository.save(shelfItem);
     }

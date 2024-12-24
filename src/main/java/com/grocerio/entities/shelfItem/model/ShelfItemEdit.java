@@ -10,8 +10,11 @@ public class ShelfItemEdit {
     @NotNull
     public Long id;
 
+    @NotBlank
+    public String itemName;
+
     @NotNull
-    public Long itemId;
+    public Long categoryId;
 
     @NotNull
     @Min(1)

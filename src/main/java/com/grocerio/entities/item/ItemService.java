@@ -41,22 +41,31 @@ public class ItemService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void save(ItemNew itemNew, Long shelfId) {
+    public Item getOrSave(ItemNew itemNew, Long shelfId) {
+        return this.itemRepository.findByNameAndShelfId(itemNew.name, shelfId)
+                .map(item -> {
+                   ItemEdit itemEdit = new ItemEdit(item.id, itemNew.name, itemNew.categoryId);
+                   return edit(itemEdit, shelfId);
+                })
+                .orElseGet(() -> save(itemNew, shelfId));
+    }
+
+    public Item save(ItemNew itemNew, Long shelfId) {
         Item item = new Item();
-        item.name = itemNew.name;
+        item.name = itemNew.name.toLowerCase();
         item.category = categoryService.get(itemNew.categoryId, shelfId);
         item.shelf = shelfService.get(shelfId);
 
-        this.itemRepository.save(item);
+        return this.itemRepository.save(item);
     }
 
-    public void edit(ItemEdit itemEdit, Long shelfId) {
+    public Item edit(ItemEdit itemEdit, Long shelfId) {
         Item item = get(itemEdit.id, shelfId);
         item.name = itemEdit.name;
         item.category = categoryService.get(itemEdit.categoryId, shelfId);
         item.shelf = shelfService.get(shelfId);
 
-        this.itemRepository.save(item);
+        return this.itemRepository.save(item);
     }
 
     public void delete(Long id, Long shelfId) {

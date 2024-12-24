@@ -19,6 +19,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE i.id = :id AND i.shelf.id = :shelfId")
     Optional<Item> findByIdAndShelfId(@Param("id") Long id, @Param("shelfId") Long shelfId);
 
+    @Query("SELECT i FROM Item i WHERE i.name = :name AND i.shelf.id = :shelfId")
+    Optional<Item> findByNameAndShelfId(@Param("name") String name, @Param("shelfId") Long shelfId);
+
     @Modifying
     @Query("DELETE FROM Item i WHERE i.id = :id AND i.shelf.id = :shelfId")
     void deleteByIdAndShelfId(@Param("id") Long id, @Param("shelfId") Long shelfId);
