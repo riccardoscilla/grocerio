@@ -1,13 +1,14 @@
 package com.grocerio.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grocerio.auth.model.SignInRequest;
-import com.grocerio.auth.model.SignInResponse;
-import com.grocerio.auth.model.SignupRequest;
-import com.grocerio.auth.model.SignupResponse;
+import com.grocerio.auth.model.SignUpRequest;
+import com.grocerio.auth.model.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,18 +20,18 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(
-            @RequestBody SignupRequest request
-    ) {
-        return ResponseEntity.ok(authService.signup(request));
-    }
-
     @PostMapping("/signIn")
-    public ResponseEntity<SignInResponse> singIn(
+    public ResponseEntity<TokenResponse> singIn(
             @RequestBody SignInRequest request
     ) {
         return ResponseEntity.ok(authService.signIn(request));
+    }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<TokenResponse> signup(
+            @RequestBody SignUpRequest request
+    ) {
+        return ResponseEntity.ok(authService.signUp(request));
     }
 
 }

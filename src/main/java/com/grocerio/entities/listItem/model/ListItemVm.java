@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import java.time.Instant;
 
 @AllArgsConstructor
-
 public class ListItemVm {
     public Long id;
     public Long quantity;

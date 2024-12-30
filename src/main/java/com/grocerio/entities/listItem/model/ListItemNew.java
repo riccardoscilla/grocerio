@@ -13,7 +13,6 @@ public class ListItemNew {
     @NotNull
     public Long categoryId;
 
-
     @NotNull
     @Min(1)
     public Long quantity;

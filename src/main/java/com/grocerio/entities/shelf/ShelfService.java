@@ -10,6 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.ByteBuffer;
+import java.util.Base64;
+import java.util.UUID;
+
 @Service
 @Transactional
 public class ShelfService {
@@ -27,11 +31,31 @@ public class ShelfService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf does not exists"));
     }
 
+    public Shelf get(String shareId) {
+        return shelfRepository.findByShareId(shareId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf does not exists"));
+    }
+
     public Shelf save(ShelfNew shelfNew) {
         Shelf shelf = new Shelf();
         shelf.name = shelfNew.name;
 
         return shelfRepository.save(shelf);
     }
+
+    public Shelf generateShareId(Long id) {
+        Shelf shelf = this.get(id);
+        shelf.shareId = ShelfService.generateShortUUID();
+        return shelfRepository.save(shelf);
+    }
+
+    public static String generateShortUUID() {
+        UUID uuid = UUID.randomUUID();
+        ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+        buffer.putLong(uuid.getMostSignificantBits());
+        buffer.putLong(uuid.getLeastSignificantBits());
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(buffer.array());
+    }
+
 
 }

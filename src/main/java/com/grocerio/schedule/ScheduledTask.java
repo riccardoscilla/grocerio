@@ -28,12 +28,8 @@ public class ScheduledTask {
     @Scheduled(cron = "0 */10 * * * *")
     public void executeTask() {
         String url = renderUrl + "/scheduled";
-
-        logger.info(url);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         restTemplate.getForEntity(url, Void.class, entity);
     }

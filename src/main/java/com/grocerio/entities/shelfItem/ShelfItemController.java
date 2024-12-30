@@ -67,7 +67,7 @@ public class ShelfItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{shelfItemId}/deleteAndSaveInList")
+    @PostMapping("/{shelfItemId}/delete-and-save-in-list")
     public ResponseEntity<Void> deleteAndSaveInList(
             @PathVariable Long shelfItemId,
             @RequestBody @Valid ListItemNew listItemNew
