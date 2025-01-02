@@ -45,7 +45,7 @@ public class ShelfItemController {
             @RequestBody @Valid ShelfItemNew shelfItemNew
     ) {
         Shelf shelf = userService.getAuthenticatedUser().shelf;
-        shelfItemService.save(shelfItemNew, shelf.id);
+        shelfItemService.saveOrEdit(shelfItemNew, shelf.id);
         return ResponseEntity.ok().build();
     }
 

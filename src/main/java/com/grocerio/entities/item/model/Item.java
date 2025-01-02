@@ -2,6 +2,7 @@ package com.grocerio.entities.item.model;
 
 import com.grocerio.entities.category.model.Category;
 import com.grocerio.entities.category.model.CategoryVm;
+import com.grocerio.entities.listItem.model.ListItem;
 import com.grocerio.entities.shelf.model.Shelf;
 import com.grocerio.entities.shelfItem.model.ShelfItem;
 import jakarta.persistence.*;
@@ -35,7 +36,7 @@ public class Item {
     private Set<ShelfItem> shelfItems; // Item can refer to multiple items in shelf
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ShelfItem> listItems; // Item can refer to multiple items in list
+    private Set<ListItem> listItems; // Item can refer to multiple items in list
 
 
     public ItemVm toVm() {

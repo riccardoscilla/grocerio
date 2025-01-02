@@ -18,8 +18,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category c WHERE c.id = :id AND c.shelf.id = :shelfId")
     Optional<Category> findByIdAndShelfId(@Param("id") Long id, @Param("shelfId") Long shelfId);
-
-    @Modifying
-    @Query("DELETE FROM Category i WHERE i.id = :id AND i.shelf.id = :shelfId")
-    void deleteByIdAndShelfId(@Param("id") Long id, @Param("shelfId") Long shelfId);
 }

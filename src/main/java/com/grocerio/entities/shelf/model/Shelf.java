@@ -21,7 +21,7 @@ public class Shelf {
 
     public String shareId;
 
-    @OneToMany(mappedBy = "shelf", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "shelf", cascade = CascadeType.PERSIST)
     public Set<User> users; // A shelf can be of multiple users
 
     @OneToMany(mappedBy = "shelf", cascade = CascadeType.ALL, orphanRemoval = true)

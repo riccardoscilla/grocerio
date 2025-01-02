@@ -1,6 +1,7 @@
 package com.grocerio.entities.listItem;
 
 import com.grocerio.entities.item.ItemService;
+import com.grocerio.entities.item.model.ItemEdit;
 import com.grocerio.entities.item.model.ItemNew;
 import com.grocerio.entities.listItem.model.ListItem;
 import com.grocerio.entities.listItem.model.ListItemEdit;
@@ -27,12 +28,21 @@ public class ListItemService {
         return listItemRepository.findAllByShelfId(shelfId);
     }
 
-    public ListItem get(Long itemId, Long shelfId) {
-        return listItemRepository.findByIdAndShelfId(itemId, shelfId)
+    public ListItem get(Long id, Long shelfId) {
+        return listItemRepository.findByIdAndShelfId(id, shelfId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void save(ListItemNew listItemNew, Long shelfId) {
+    public ListItem saveOrEdit(ListItemNew listItemNew, Long shelfId) {
+        return listItemRepository.findByNameAndShelfId(listItemNew.itemName, shelfId)
+                .map(listItem -> {
+                    ListItemEdit listItemEdit = ListItemEdit.from(listItem, listItemNew);
+                    return edit(listItemEdit, shelfId);
+                })
+                .orElseGet(() -> save(listItemNew, shelfId));
+    }
+
+    public ListItem save(ListItemNew listItemNew, Long shelfId) {
         ListItem listItem = new ListItem();
         listItem.quantity = listItemNew.quantity;
         listItem.insertionDate = listItemNew.insertionDate;
@@ -41,10 +51,10 @@ public class ListItemService {
         ItemNew itemNew = new ItemNew(listItemNew.itemName, listItemNew.categoryId);
         listItem.item = itemService.getOrSave(itemNew, shelfId);
 
-        this.listItemRepository.save(listItem);
+        return this.listItemRepository.save(listItem);
     }
 
-    public void edit(ListItemEdit listItemEdit, Long shelfId) {
+    public ListItem edit(ListItemEdit listItemEdit, Long shelfId) {
         ListItem listItem = get(listItemEdit.id, shelfId);
         listItem.quantity = listItemEdit.quantity;
         listItem.insertionDate = listItemEdit.insertionDate;
@@ -53,7 +63,7 @@ public class ListItemService {
         ItemNew itemNew = new ItemNew(listItemEdit.itemName, listItemEdit.categoryId);
         listItem.item = itemService.getOrSave(itemNew, shelfId);
 
-        this.listItemRepository.save(listItem);
+        return this.listItemRepository.save(listItem);
     }
 
     public void delete(Long id, Long shelfId) {

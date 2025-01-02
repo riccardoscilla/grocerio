@@ -42,7 +42,7 @@ public class ListItemController {
             @RequestBody @Valid ListItemNew listItemNew
     ) {
         Shelf shelf = userService.getAuthenticatedUser().shelf;
-        listItemService.save(listItemNew, shelf.id);
+        listItemService.saveOrEdit(listItemNew, shelf.id);
         return ResponseEntity.ok().build();
     }
 

@@ -2,6 +2,9 @@ package com.grocerio.entities.shelfItem;
 
 import com.grocerio.entities.item.ItemService;
 import com.grocerio.entities.item.model.ItemNew;
+import com.grocerio.entities.listItem.model.ListItem;
+import com.grocerio.entities.listItem.model.ListItemEdit;
+import com.grocerio.entities.listItem.model.ListItemNew;
 import com.grocerio.entities.shelfItem.model.ShelfItem;
 import com.grocerio.entities.shelfItem.model.ShelfItemEdit;
 import com.grocerio.entities.shelfItem.model.ShelfItemNew;
@@ -32,7 +35,16 @@ public class ShelfItemService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void save(ShelfItemNew shelfItemNew, Long shelfId) {
+    public ShelfItem saveOrEdit(ShelfItemNew shelfItemNew, Long shelfId) {
+        return shelfItemRepository.findByNameAndShelfId(shelfItemNew.itemName, shelfId)
+                .map(shelfItem -> {
+                    ShelfItemEdit shelfItemEdit = ShelfItemEdit.from(shelfItem, shelfItemNew);
+                    return edit(shelfItemEdit, shelfId);
+                })
+                .orElseGet(() -> save(shelfItemNew, shelfId));
+    }
+
+    public ShelfItem save(ShelfItemNew shelfItemNew, Long shelfId) {
         ShelfItem shelfItem = new ShelfItem();
         shelfItem.quantity = shelfItemNew.quantity;
         shelfItem.purchaseDate = shelfItemNew.purchaseDate;
@@ -41,10 +53,10 @@ public class ShelfItemService {
         ItemNew itemNew = new ItemNew(shelfItemNew.itemName, shelfItemNew.categoryId);
         shelfItem.item = itemService.getOrSave(itemNew, shelfId);
 
-        this.shelfItemRepository.save(shelfItem);
+        return this.shelfItemRepository.save(shelfItem);
     }
 
-    public void edit(ShelfItemEdit shelfItemEdit, Long shelfId) {
+    public ShelfItem edit(ShelfItemEdit shelfItemEdit, Long shelfId) {
         ShelfItem shelfItem = getById(shelfItemEdit.id, shelfId);
         shelfItem.quantity = shelfItemEdit.quantity;
         shelfItem.purchaseDate = shelfItemEdit.purchaseDate;
@@ -53,7 +65,7 @@ public class ShelfItemService {
         ItemNew itemNew = new ItemNew(shelfItemEdit.itemName, shelfItemEdit.categoryId);
         shelfItem.item = itemService.getOrSave(itemNew, shelfId);
 
-        this.shelfItemRepository.save(shelfItem);
+        return this.shelfItemRepository.save(shelfItem);
     }
 
     public void delete(Long id, Long shelfId) {

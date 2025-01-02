@@ -5,7 +5,7 @@ import com.grocerio.entities.item.model.Item;
 import com.grocerio.entities.item.model.ItemEdit;
 import com.grocerio.entities.item.model.ItemNew;
 import com.grocerio.entities.shelf.ShelfService;
-import com.grocerio.entities.shelf.model.Shelf;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +22,16 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryService categoryService;
     private final ShelfService shelfService;
+    private final EntityManager entityManager;
 
     Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, CategoryService categoryService, ShelfService shelfService) {
+    public ItemService(ItemRepository itemRepository, CategoryService categoryService, ShelfService shelfService, EntityManager entityManager) {
         this.itemRepository = itemRepository;
         this.categoryService = categoryService;
         this.shelfService = shelfService;
+        this.entityManager = entityManager;
     }
 
     public List<Item> getAll(Long shelfId) {
@@ -69,6 +71,13 @@ public class ItemService {
     }
 
     public void delete(Long id, Long shelfId) {
-        this.itemRepository.deleteByIdAndShelfId(id, shelfId);
+        String query = "SELECT i FROM Item i WHERE i.id = :id AND i.shelf.id = :shelfId";
+        Item item = entityManager
+                .createQuery(query, Item.class)
+                .setParameter("id", id)
+                .setParameter("shelfId", shelfId)
+                .getSingleResult();
+
+        entityManager.remove(item);
     }
 }

@@ -23,11 +23,11 @@ public class ItemCoordinatorService {
 
     public void deleteAndSaveInList(Long shelfItemId, ListItemNew listItemNew, Long shelfId) {
         shelfItemService.delete(shelfItemId, shelfId);
-        listItemService.save(listItemNew, shelfId);
+        listItemService.saveOrEdit(listItemNew, shelfId);
     }
 
     public void deleteAndSaveInShelf(List<Long> listItemIds, List<ShelfItemNew> shelfItemsNew, Long shelfId) {
         listItemIds.forEach(id -> listItemService.delete(id, shelfId));
-        shelfItemsNew.forEach(shelfItemNew -> shelfItemService.save(shelfItemNew, shelfId));
+        shelfItemsNew.forEach(shelfItemNew -> shelfItemService.saveOrEdit(shelfItemNew, shelfId));
     }
 }
