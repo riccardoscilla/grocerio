@@ -23,8 +23,8 @@ public class ShelfController {
         this.userService = userService;
     }
 
-    @GetMapping("/shareId")
-    public ResponseEntity<ShelfVm> getShareId() {
+    @GetMapping
+    public ResponseEntity<ShelfVm> getShelf() {
         Shelf shelf = userService.getAuthenticatedUser().shelf;
         shelf = shelfService.generateShareId(shelf.id);
         return ResponseEntity.ok(shelf.toVm());
