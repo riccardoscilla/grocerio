@@ -8,4 +8,5 @@ public class ItemVm {
     public Long id;
     public String name;
     public CategoryVm category;
+    public Boolean favourite;
 }

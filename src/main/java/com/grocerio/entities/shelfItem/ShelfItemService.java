@@ -36,7 +36,7 @@ public class ShelfItemService {
     }
 
     public ShelfItem saveOrEdit(ShelfItemNew shelfItemNew, Long shelfId) {
-        return shelfItemRepository.findByNameAndShelfId(shelfItemNew.itemName, shelfId)
+        return shelfItemRepository.findByNameAndShelfId(shelfItemNew.itemNew.name, shelfId)
                 .map(shelfItem -> {
                     ShelfItemEdit shelfItemEdit = ShelfItemEdit.from(shelfItem, shelfItemNew);
                     return edit(shelfItemEdit, shelfId);
@@ -49,9 +49,7 @@ public class ShelfItemService {
         shelfItem.quantity = shelfItemNew.quantity;
         shelfItem.purchaseDate = shelfItemNew.purchaseDate;
         shelfItem.note = shelfItemNew.note;
-
-        ItemNew itemNew = new ItemNew(shelfItemNew.itemName, shelfItemNew.categoryId);
-        shelfItem.item = itemService.getOrSave(itemNew, shelfId);
+        shelfItem.item = itemService.getOrSave(shelfItemNew.itemNew, shelfId);
 
         return this.shelfItemRepository.save(shelfItem);
     }
@@ -61,9 +59,7 @@ public class ShelfItemService {
         shelfItem.quantity = shelfItemEdit.quantity;
         shelfItem.purchaseDate = shelfItemEdit.purchaseDate;
         shelfItem.note = shelfItemEdit.note;
-
-        ItemNew itemNew = new ItemNew(shelfItemEdit.itemName, shelfItemEdit.categoryId);
-        shelfItem.item = itemService.getOrSave(itemNew, shelfId);
+        shelfItem.item = itemService.getOrSave(shelfItemEdit.itemNew, shelfId);
 
         return this.shelfItemRepository.save(shelfItem);
     }

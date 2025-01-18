@@ -1,5 +1,6 @@
 package com.grocerio.entities.shelfItem.model;
 
+import com.grocerio.entities.item.model.ItemNew;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,11 +11,8 @@ public class ShelfItemEdit {
     @NotNull
     public Long id;
 
-    @NotBlank
-    public String itemName;
-
     @NotNull
-    public Long categoryId;
+    public ItemNew itemNew;
 
     @NotNull
     @Min(1)
@@ -28,8 +26,7 @@ public class ShelfItemEdit {
     public static ShelfItemEdit from(ShelfItem shelfItem, ShelfItemNew shelfItemNew) {
         ShelfItemEdit shelfItemEdit = new ShelfItemEdit();
         shelfItemEdit.id = shelfItem.id;
-        shelfItemEdit.itemName = shelfItem.item.name;
-        shelfItemEdit.categoryId = shelfItem.item.category.id;
+        shelfItemEdit.itemNew = ItemNew.from(shelfItem.item);
         shelfItemEdit.quantity = shelfItem.quantity + shelfItemNew.quantity;
         shelfItemEdit.purchaseDate = shelfItem.purchaseDate;
 

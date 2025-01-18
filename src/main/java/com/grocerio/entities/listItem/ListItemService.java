@@ -34,7 +34,7 @@ public class ListItemService {
     }
 
     public ListItem saveOrEdit(ListItemNew listItemNew, Long shelfId) {
-        return listItemRepository.findByNameAndShelfId(listItemNew.itemName, shelfId)
+        return listItemRepository.findByNameAndShelfId(listItemNew.itemNew.name, shelfId)
                 .map(listItem -> {
                     ListItemEdit listItemEdit = ListItemEdit.from(listItem, listItemNew);
                     return edit(listItemEdit, shelfId);
@@ -47,9 +47,7 @@ public class ListItemService {
         listItem.quantity = listItemNew.quantity;
         listItem.insertionDate = listItemNew.insertionDate;
         listItem.note = listItemNew.note;
-
-        ItemNew itemNew = new ItemNew(listItemNew.itemName, listItemNew.categoryId);
-        listItem.item = itemService.getOrSave(itemNew, shelfId);
+        listItem.item = itemService.getOrSave(listItemNew.itemNew, shelfId);
 
         return this.listItemRepository.save(listItem);
     }
@@ -59,9 +57,7 @@ public class ListItemService {
         listItem.quantity = listItemEdit.quantity;
         listItem.insertionDate = listItemEdit.insertionDate;
         listItem.note = listItemEdit.note;
-
-        ItemNew itemNew = new ItemNew(listItemEdit.itemName, listItemEdit.categoryId);
-        listItem.item = itemService.getOrSave(itemNew, shelfId);
+        listItem.item = itemService.getOrSave(listItemEdit.itemNew, shelfId);
 
         return this.listItemRepository.save(listItem);
     }

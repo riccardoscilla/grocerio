@@ -7,6 +7,7 @@ import com.grocerio.entities.shelf.model.Shelf;
 import com.grocerio.entities.shelfItem.model.ShelfItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,12 +39,15 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ListItem> listItems; // Item can refer to multiple items in list
 
+    @NotNull
+    public Boolean favourite;
 
     public ItemVm toVm() {
         return new ItemVm(
                 id,
                 name,
-                category.toVm()
+                category.toVm(),
+                favourite
         );
     }
 }

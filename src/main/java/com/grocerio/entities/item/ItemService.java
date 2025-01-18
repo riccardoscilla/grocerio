@@ -46,7 +46,7 @@ public class ItemService {
     public Item getOrSave(ItemNew itemNew, Long shelfId) {
         return this.itemRepository.findByNameAndShelfId(itemNew.name, shelfId)
                 .map(item -> {
-                   ItemEdit itemEdit = new ItemEdit(item.id, itemNew.name, itemNew.categoryId);
+                   ItemEdit itemEdit = ItemEdit.from(item, itemNew);
                    return edit(itemEdit, shelfId);
                 })
                 .orElseGet(() -> save(itemNew, shelfId));
@@ -58,6 +58,8 @@ public class ItemService {
         item.category = categoryService.get(itemNew.categoryId, shelfId);
         item.shelf = shelfService.get(shelfId);
 
+        item.favourite = itemNew.favourite;
+
         return this.itemRepository.save(item);
     }
 
@@ -66,6 +68,8 @@ public class ItemService {
         item.name = itemEdit.name;
         item.category = categoryService.get(itemEdit.categoryId, shelfId);
         item.shelf = shelfService.get(shelfId);
+
+        item.favourite = itemEdit.favourite;
 
         return this.itemRepository.save(item);
     }
