@@ -23,6 +23,9 @@ public class ListItemEdit {
 
     public String note;
 
+    @NotNull
+    public Boolean inCart;
+
     public static ListItemEdit from(ListItem listItem, ListItemNew listItemNew) {
         ListItemEdit listItemEdit = new ListItemEdit();
         listItemEdit.id = listItem.id;
@@ -33,6 +36,9 @@ public class ListItemEdit {
         listItemEdit.note = listItem.note;
         if (listItemNew.note != null && !listItemNew.note.isBlank())
             listItemEdit.note += "\n" + listItemNew.note;
+
+        listItemEdit.inCart = listItem.inCart;
+
         return listItemEdit;
     }
 }

@@ -17,6 +17,9 @@ public interface ListItemRepository extends JpaRepository<ListItem, Long> {
     @Query("SELECT li FROM ListItem li WHERE li.item.shelf.id = :shelfId")
     List<ListItem> findAllByShelfId(@Param("shelfId") Long shelfId);
 
+    @Query("SELECT li FROM ListItem li WHERE li.inCart = true AND li.item.shelf.id = :shelfId")
+    List<ListItem> findAllCheckedByShelfId(@Param("shelfId") Long shelfId);
+
     @Query("SELECT li FROM ListItem li WHERE li.id = :id AND li.item.shelf.id = :shelfId")
     Optional<ListItem> findByIdAndShelfId(@Param("id") Long id, @Param("shelfId") Long shelfId);
 

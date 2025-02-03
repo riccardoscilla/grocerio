@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,12 +43,15 @@ public class Item {
     @NotNull
     public Boolean favourite;
 
+    public Instant lastPurchaseDate;
+
     public ItemVm toVm() {
         return new ItemVm(
                 id,
                 name,
                 category.toVm(),
-                favourite
+                favourite,
+                lastPurchaseDate
         );
     }
 }

@@ -11,5 +11,6 @@ public class ListItemVm {
     public Long quantity;
     public Instant insertionDate;
     public String note;
+    public Boolean inCart;
     public ItemVm item;
 }

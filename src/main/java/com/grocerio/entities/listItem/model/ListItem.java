@@ -24,6 +24,9 @@ public class ListItem {
 
     public String note;
 
+    @NotNull
+    public Boolean inCart;
+
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     public Item item; // List Item refers to one item
@@ -34,6 +37,7 @@ public class ListItem {
                 quantity,
                 insertionDate,
                 note,
+                inCart,
                 item.toVm()
         );
     }

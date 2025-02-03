@@ -29,7 +29,6 @@ public class ShelfItem {
     @JoinColumn(name = "item_id", nullable = false)
     public Item item; // Shelf Item refers to one item
 
-
     public ShelfItemVm toVm() {
         return new ShelfItemVm(
                 id,

@@ -1,6 +1,7 @@
 package com.grocerio.entities.listItem;
 
 import com.grocerio.entities.item.ItemService;
+import com.grocerio.entities.item.model.Item;
 import com.grocerio.entities.item.model.ItemEdit;
 import com.grocerio.entities.item.model.ItemNew;
 import com.grocerio.entities.listItem.model.ListItem;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -47,9 +49,10 @@ public class ListItemService {
         listItem.quantity = listItemNew.quantity;
         listItem.insertionDate = listItemNew.insertionDate;
         listItem.note = listItemNew.note;
+        listItem.inCart = listItemNew.inCart;
         listItem.item = itemService.getOrSave(listItemNew.itemNew, shelfId);
 
-        return this.listItemRepository.save(listItem);
+        return listItemRepository.save(listItem);
     }
 
     public ListItem edit(ListItemEdit listItemEdit, Long shelfId) {
@@ -57,13 +60,24 @@ public class ListItemService {
         listItem.quantity = listItemEdit.quantity;
         listItem.insertionDate = listItemEdit.insertionDate;
         listItem.note = listItemEdit.note;
+        listItem.inCart = listItemEdit.inCart;
         listItem.item = itemService.getOrSave(listItemEdit.itemNew, shelfId);
 
-        return this.listItemRepository.save(listItem);
+        return listItemRepository.save(listItem);
     }
 
     public void delete(Long id, Long shelfId) {
         this.listItemRepository.deleteByIdAndShelfId(id, shelfId);
+    }
+
+    public List<ListItem> getInCart(Long shelfId) {
+        return listItemRepository.findAllCheckedByShelfId(shelfId);
+    }
+
+    public void updateLastPurchaseDate(ListItem listItem, Long shelfId) {
+        ItemEdit itemEdit = ItemEdit.from(listItem.item);
+        itemEdit.lastPurchaseDate = Instant.now();
+        itemService.edit(itemEdit, shelfId);
     }
 
 }

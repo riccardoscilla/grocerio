@@ -64,16 +64,10 @@ public class ListItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/delete-and-save-in-shelf")
-    public ResponseEntity<Void> deleteAndSaveInShelf(
-            @RequestBody @Valid ListItemDeleteAndSaveInShelf listItemDeleteAndSaveInShelf
-    ) {
+    @DeleteMapping("/delete-and-save-in-shelf")
+    public ResponseEntity<Void> deleteAndSaveInShelf() {
         Shelf shelf = userService.getAuthenticatedUser().shelf;
-        itemCoordinatorService.deleteAndSaveInShelf(
-                listItemDeleteAndSaveInShelf.listItemIds,
-                listItemDeleteAndSaveInShelf.shelfItems,
-                shelf.id
-        );
+        itemCoordinatorService.deleteAndSaveInShelf(shelf.id);
         return ResponseEntity.ok().build();
     }
 }

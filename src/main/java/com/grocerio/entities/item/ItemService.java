@@ -59,8 +59,9 @@ public class ItemService {
         item.shelf = shelfService.get(shelfId);
 
         item.favourite = itemNew.favourite;
+        item.lastPurchaseDate = itemNew.lastPurchaseDate;
 
-        return this.itemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     public Item edit(ItemEdit itemEdit, Long shelfId) {
@@ -70,8 +71,9 @@ public class ItemService {
         item.shelf = shelfService.get(shelfId);
 
         item.favourite = itemEdit.favourite;
+        item.lastPurchaseDate = itemEdit.lastPurchaseDate;
 
-        return this.itemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     public void delete(Long id, Long shelfId) {

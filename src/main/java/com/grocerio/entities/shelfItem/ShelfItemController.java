@@ -67,13 +67,12 @@ public class ShelfItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{shelfItemId}/delete-and-save-in-list")
+    @DeleteMapping("/{shelfItemId}/delete-and-save-in-list")
     public ResponseEntity<Void> deleteAndSaveInList(
-            @PathVariable Long shelfItemId,
-            @RequestBody @Valid ListItemNew listItemNew
+            @PathVariable Long shelfItemId
     ) {
         Shelf shelf = userService.getAuthenticatedUser().shelf;
-        itemCoordinatorService.deleteAndSaveInList(shelfItemId, listItemNew, shelf.id);
+        itemCoordinatorService.deleteAndSaveInList(shelfItemId, shelf.id);
         return ResponseEntity.ok().build();
     }
 
