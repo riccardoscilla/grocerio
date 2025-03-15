@@ -43,7 +43,7 @@ public class ItemService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Item getOrSave(ItemNew itemNew, Long shelfId) {
+    public Item saveOrEdit(ItemNew itemNew, Long shelfId) {
         return this.itemRepository.findByNameAndShelfId(itemNew.name, shelfId)
                 .map(item -> {
                    ItemEdit itemEdit = ItemEdit.from(item, itemNew);

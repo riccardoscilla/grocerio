@@ -1,9 +1,7 @@
 package com.grocerio.entities.listItem;
 
 import com.grocerio.entities.item.ItemService;
-import com.grocerio.entities.item.model.Item;
 import com.grocerio.entities.item.model.ItemEdit;
-import com.grocerio.entities.item.model.ItemNew;
 import com.grocerio.entities.listItem.model.ListItem;
 import com.grocerio.entities.listItem.model.ListItemEdit;
 import com.grocerio.entities.listItem.model.ListItemNew;
@@ -50,7 +48,7 @@ public class ListItemService {
         listItem.insertionDate = listItemNew.insertionDate;
         listItem.note = listItemNew.note;
         listItem.inCart = listItemNew.inCart;
-        listItem.item = itemService.getOrSave(listItemNew.itemNew, shelfId);
+        listItem.item = itemService.saveOrEdit(listItemNew.itemNew, shelfId);
 
         return listItemRepository.save(listItem);
     }
@@ -61,7 +59,7 @@ public class ListItemService {
         listItem.insertionDate = listItemEdit.insertionDate;
         listItem.note = listItemEdit.note;
         listItem.inCart = listItemEdit.inCart;
-        listItem.item = itemService.getOrSave(listItemEdit.itemNew, shelfId);
+        listItem.item = itemService.saveOrEdit(listItemEdit.itemNew, shelfId);
 
         return listItemRepository.save(listItem);
     }
